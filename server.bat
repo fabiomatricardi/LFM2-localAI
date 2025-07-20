@@ -1,0 +1,6 @@
+@echo off
+echo Starting llama-server with 8192 tokens context window...
+start cmd.exe /c llama-server.exe -m LFM2–700M-Q8_0.gguf 
+echo Opening default browser in 15 seconds...
+timeout /t 15
+start http://localhost:8080
