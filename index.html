@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFM2: The Future of On-Device AI | An Interactive Explainer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A thematic, single-page application guiding the user from a high-level hero section through interactive explorations of architecture, performance, capabilities, and licensing, concluding with a strategic outlook. This narrative structure is chosen for better usability and information digestion over a rigid report format. Key interactions include a filterable benchmark chart, hover-able architecture diagrams, and tabbed content for detailed explanations. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Presentation Method -> Interaction -> Justification. 1. Architecture -> Organize/Inform -> HTML/CSS Diagram -> Hover for details -> Interactive and lightweight. 2. Performance Data -> Compare -> Interactive Bar Chart (Chart.js) -> Filter benchmarks -> User-driven data exploration. 3. Training Process -> Organize -> HTML/CSS Stepped Diagram -> Visual flow -> Intuitive for a process. 4. Tool Use -> Inform -> Interactive Code Demo -> Click to reveal steps -> Makes abstract concept tangible. 5. License Terms -> Inform -> Visual Guide with Icons -> Quick comprehension -> More user-friendly than text. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button.active {
+            background-color: #4A5568;
+            color: #FFFFFF;
+        }
+        .tab-button.active {
+            border-bottom: 2px solid #4A5568;
+            color: #4A5568;
+            font-weight: 600;
+        }
+        .architecture-block {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-bold text-gray-800">Liquid.ai</span>
+                <span class="text-2xl font-light text-gray-600">LFM2 Explainer</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-2">
+                <a href="#introduction" class="nav-button px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200">Introduction</a>
+                <a href="#architecture" class="nav-button px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200">Architecture</a>
+                <a href="#performance" class="nav-button px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200">Performance</a>
+                <a href="#capabilities" class="nav-button px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200">Capabilities</a>
+                <a href="#license" class="nav-button px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200">License</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+        <section id="introduction" class="text-center mb-16 md:mb-24 scroll-mt-20">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">Meet LFM2</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                Liquid.ai's new Liquid Foundation Models are redefining on-device AI. Discover how this novel architecture delivers unparalleled speed, efficiency, and privacy for the next generation of edge applications.
+            </p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2">⚡️ Blazing Fast</h3>
+                    <p class="text-gray-600">Up to 2x faster decode and prefill speeds on CPU compared to leading competitors.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2">🧠 Highly Efficient</h3>
+                    <p class="text-gray-600">A 3x improvement in training efficiency makes powerful AI more cost-effective than ever.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2">🔒 Private by Design</h3>
+                    <p class="text-gray-600">Runs entirely on-device, ensuring millisecond latency and data-sovereign privacy.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">A Novel Hybrid Architecture</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                LFM2 moves beyond traditional transformers, blending the strengths of convolutions and attention. This section breaks down its unique 16-block structure, the core of its efficiency. Hover over the blocks to learn more.
+            </p>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <div class="flex flex-wrap items-center justify-center gap-2">
+                    <div class="text-lg font-semibold text-gray-700">Start</div>
+                    <div class="text-gray-400">→</div>
+                    <div class="flex flex-wrap justify-center gap-2 border-2 border-dashed border-gray-300 p-4 rounded-lg">
+                        <div class="has-tooltip architecture-block bg-blue-100 text-blue-800 px-4 py-2 rounded-md font-medium text-sm cursor-pointer">
+                            Conv Block (x10)
+                            <div class="tooltip absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded py-2 px-3 z-10">
+                                <strong>Double-Gated Short-Range LIV Convolution:</strong> Optimized for embedded CPUs, these blocks use dynamic, input-aware weights for maximum efficiency.
+                            </div>
+                        </div>
+                        <div class="text-gray-400">+</div>
+                        <div class="has-tooltip architecture-block bg-green-100 text-green-800 px-4 py-2 rounded-md font-medium text-sm cursor-pointer">
+                            GQA Block (x6)
+                            <div class="tooltip absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded py-2 px-3 z-10">
+                                <strong>Grouped Query Attention:</strong> A more efficient form of attention, combined with SwiGLU activation and RMSNorm for powerful, stable processing.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-gray-400">→</div>
+                    <div class="text-lg font-semibold text-gray-700">Output</div>
+                </div>
+                <p class="text-center text-gray-500 mt-6 text-sm">
+                    This 16-block hybrid structure was discovered by STAR, Liquid AI's neural architecture search engine, which optimized for real-world performance on hardware like Qualcomm Snapdragon SoCs.
+                </p>
+            </div>
+        </section>
+
+        <section id="performance" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Performance Dashboard</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                LFM2 doesn't just promise efficiency—it delivers superior performance. This interactive chart compares LFM2 models against competitors on key industry benchmarks. Use the buttons to filter by capability.
+            </p>
+            <div class="bg-white p-4 md:p-8 rounded-lg shadow-lg">
+                <div class="flex flex-wrap justify-center gap-2 mb-6">
+                    <button class="benchmark-filter-btn active px-4 py-2 text-sm font-medium rounded-md bg-gray-700 text-white" data-benchmark="all">All Benchmarks</button>
+                    <button class="benchmark-filter-btn px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-700" data-benchmark="knowledge">Knowledge (MMLU)</button>
+                    <button class="benchmark-filter-btn px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-700" data-benchmark="math">Math (GSM8K)</button>
+                    <button class="benchmark-filter-btn px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-700" data-benchmark="reasoning">Instruction Following (IFEval)</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="benchmarkChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="capabilities" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">How It Works & What It Can Do</h2>
+             <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Explore the sophisticated training pipeline that gives LFM2 its power and the advanced capabilities it unlocks, from building reliable AI agents to its detailed model specifications.
+            </p>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex justify-center" aria-label="Tabs">
+                        <button class="tab-button active w-1/3 py-4 px-1 border-b-2 font-medium text-sm text-center" data-tab="training">Training Process</button>
+                        <button class="tab-button w-1/3 py-4 px-1 border-b-2 font-medium text-sm text-center text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tool-use">Tool Use & Agents</button>
+                        <button class="tab-button w-1/3 py-4 px-1 border-b-2 font-medium text-sm text-center text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="specs">Model Specs</button>
+                    </nav>
+                </div>
+                <div id="capabilities-content" class="p-6 md:p-8">
+                    <!-- Content will be injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="license" class="scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">LFM Open License v1.0 Explained</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                LFM2 is released under a "source-available with commercial restrictions" license. It's designed to be open for research and small businesses, while ensuring commercial success contributes back to the project.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
+                    <h3 class="text-xl font-bold text-green-800 mb-3">✅ Permitted Free Use</h3>
+                    <ul class="space-y-3 text-green-700">
+                        <li class="flex items-start"><span class="mr-2 mt-1">🔬</span><span>**Research & Non-Profit:** Unrestricted use for academic and non-commercial projects.</span></li>
+                        <li class="flex items-start"><span class="mr-2 mt-1">🚀</span><span>**Startups & Small Businesses:** Free commercial use for companies with less than $10 million USD in annual revenue.</span></li>
+                        <li class="flex items-start"><span class="mr-2 mt-1">🔧</span><span>**Proprietary Fine-Tuning:** No "Copyleft" requirement. You can fine-tune the models on your own data and keep the derivatives proprietary.</span></li>
+                    </ul>
+                </div>
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-r-lg">
+                    <h3 class="text-xl font-bold text-yellow-800 mb-3">⚠️ Action Required</h3>
+                     <ul class="space-y-3 text-yellow-700">
+                        <li class="flex items-start"><span class="mr-2 mt-1">💼</span><span>**Large Enterprises:** Companies with annual revenue exceeding $10 million USD must contact Liquid AI to purchase a commercial license.</span></li>
+                        <li class="flex items-start"><span class="mr-2 mt-1">©️</span><span>**Attribution:** You must retain all original copyright and license notices when distributing the model or its derivatives.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>This interactive explainer was generated to synthesize and visualize the key information about Liquid.ai's LFM2 models.</p>
+            <p class="text-sm text-gray-400 mt-2">All data is based on publicly available information from Liquid.ai as of July 2025.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const benchmarkData = {
+                all: {
+                    labels: ['LFM2-1.2B', 'Qwen3-1.7B', 'LFM2-700M', 'Llama-3.2-1B', 'Gemma-3-1B', 'LFM2-350M', 'Qwen3-0.6B'],
+                    datasets: [
+                        { label: 'MMLU (Knowledge)', data: [55.23, 59.11, 49.9, 46.6, 40.08, 43.43, 44.93], backgroundColor: '#60A5FA' },
+                        { label: 'GSM8K (Math)', data: [58.3, 51.4, 46.4, 35.71, 59.59, 30.1, 36.47], backgroundColor: '#FBBF24' },
+                        { label: 'IFEval (Instructions)', data: [74.89, 73.98, 72.23, 52.39, 62.9, 65.12, 64.24], backgroundColor: '#4ADE80' },
+                    ]
+                },
+                knowledge: {
+                    labels: ['Qwen3-1.7B', 'LFM2-1.2B', 'LFM2-700M', 'Llama-3.2-1B', 'Qwen3-0.6B', 'LFM2-350M', 'Gemma-3-1B'],
+                    datasets: [{ label: 'MMLU Score', data: [59.11, 55.23, 49.9, 46.6, 44.93, 43.43, 40.08], backgroundColor: '#60A5FA' }]
+                },
+                math: {
+                    labels: ['Gemma-3-1B', 'LFM2-1.2B', 'Qwen3-1.7B', 'LFM2-700M', 'Qwen3-0.6B', 'Llama-3.2-1B', 'LFM2-350M'],
+                    datasets: [{ label: 'GSM8K Score', data: [59.59, 58.3, 51.4, 46.4, 36.47, 35.71, 30.1], backgroundColor: '#FBBF24' }]
+                },
+                reasoning: {
+                    labels: ['LFM2-1.2B', 'Qwen3-1.7B', 'LFM2-700M', 'LFM2-350M', 'Qwen3-0.6B', 'Gemma-3-1B', 'Llama-3.2-1B'],
+                    datasets: [{ label: 'IFEval Score', data: [74.89, 73.98, 72.23, 65.12, 64.24, 62.9, 52.39], backgroundColor: '#4ADE80' }]
+                }
+            };
+
+            const ctx = document.getElementById('benchmarkChart').getContext('2d');
+            let benchmarkChart = new Chart(ctx, {
+                type: 'bar',
+                data: benchmarkData.all,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { beginAtZero: true, grid: { color: '#E5E7EB' } },
+                        y: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.x !== null) { label += context.parsed.x.toFixed(2); }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const filterButtons = document.querySelectorAll('.benchmark-filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-gray-700', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    this.classList.add('active', 'bg-gray-700', 'text-white');
+                    this.classList.remove('bg-gray-200', 'text-gray-700');
+                    
+                    const benchmarkType = this.dataset.benchmark;
+                    const newData = benchmarkData[benchmarkType];
+                    
+                    const sortedIndices = Array.from(Array(newData.datasets[0].data.length).keys()).sort((a, b) => {
+                        if (newData.datasets.length > 1) { // For 'all', sort by first dataset (MMLU)
+                            return newData.datasets[0].data[b] - newData.datasets[0].data[a];
+                        }
+                        return newData.datasets[0].data[b] - newData.datasets[0].data[a];
+                    });
+
+                    const sortedLabels = sortedIndices.map(i => newData.labels[i]);
+                    const sortedDatasets = newData.datasets.map(dataset => ({
+                        ...dataset,
+                        data: sortedIndices.map(i => dataset.data[i])
+                    }));
+                    
+                    benchmarkChart.data.labels = sortedLabels;
+                    benchmarkChart.data.datasets = sortedDatasets;
+                    benchmarkChart.options.plugins.legend.display = benchmarkType === 'all';
+                    benchmarkChart.update();
+                });
+            });
+
+            const capabilitiesContent = {
+                training: `
+                    <h3 class="text-xl font-semibold mb-4">A Sophisticated Multi-Stage Training Pipeline</h3>
+                    <p class="text-gray-600 mb-8">LFM2 models are trained on 10 trillion tokens using a four-stage process to ensure high quality and robust capabilities despite their smaller size.</p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">1</div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold">Knowledge Distillation</h4>
+                                <p class="text-gray-600">The larger LFM1-7B model acts as a "teacher," transferring its knowledge to the smaller LFM2 "student" models efficiently.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">2</div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold">Supervised Fine-Tuning (SFT)</h4>
+                                <p class="text-gray-600">Models are fine-tuned on a massive, diverse dataset of downstream tasks and general domains to unlock versatile, generalist capabilities.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">3</div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold">Direct Preference Optimization (DPO)</h4>
+                                <p class="text-gray-600">A custom DPO algorithm aligns model outputs with human preferences, using LLM judges to score and rank multiple possible responses.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">4</div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold">Iterative Model Merging</h4>
+                                <p class="text-gray-600">The best candidate models from different training runs are merged together to create a final, optimized model that combines their strengths.</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'tool-use': `
+                    <h3 class="text-xl font-semibold mb-4">Powering Reliable AI Agents</h3>
+                    <p class="text-gray-600 mb-6">LFM2 is ideal for agentic tasks thanks to its built-in, four-step tool use functionality. This ensures structured, reliable, and secure interactions with external tools.</p>
+                    <div class="bg-gray-800 text-white p-4 rounded-lg font-mono text-sm">
+                        <p><span class="text-purple-400">1. Define Function:</span> <span class="text-gray-400">&lt;|tool_list_start|&gt;</span> <span class="text-yellow-300">{"name": "get_weather", ...}</span> <span class="text-gray-400">&lt;|tool_list_end|&gt;</span></p>
+                        <p class="mt-2"><span class="text-purple-400">2. Generate Call:</span> <span class="text-gray-400">&lt;|tool_call_start|&gt;</span> <span class="text-green-400">get_weather(location="Boston")</span> <span class="text-gray-400">&lt;|tool_call_end|&gt;</span></p>
+                        <p class="mt-2"><span class="text-purple-400">3. Execute & Return:</span> <span class="text-gray-400">&lt;|tool_response_start|&gt;</span> <span class="text-yellow-300">{"temperature": "72F"}</span> <span class="text-gray-400">&lt;|tool_response_end|&gt;</span></p>
+                        <p class="mt-2"><span class="text-purple-400">4. Final Answer:</span> <span class="text-green-400">"The current weather in Boston is 72°F."</span></p>
+                    </div>
+                `,
+                specs: `
+                    <h3 class="text-xl font-semibold mb-4">Model Specifications</h3>
+                    <p class="text-gray-600 mb-6">LFM2 is available in three sizes, each sharing the same core architecture and a 32K token context length.</p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Model</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parameters</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vocabulary</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precision</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr><td class="px-6 py-4 whitespace-nowrap font-medium">LFM2-1.2B</td><td class="px-6 py-4 whitespace-nowrap">1,170,340,608</td><td class="px-6 py-4 whitespace-nowrap">65,536</td><td class="px-6 py-4 whitespace-nowrap">bfloat16</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap font-medium">LFM2-700M</td><td class="px-6 py-4 whitespace-nowrap">742,489,344</td><td class="px-6 py-4 whitespace-nowrap">65,536</td><td class="px-6 py-4 whitespace-nowrap">bfloat16</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap font-medium">LFM2-350M</td><td class="px-6 py-4 whitespace-nowrap">354,483,968</td><td class="px-6 py-4 whitespace-nowrap">65,536</td><td class="px-6 py-4 whitespace-nowrap">bfloat16</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `
+            };
+            
+            const contentContainer = document.getElementById('capabilities-content');
+            const tabButtons = document.querySelectorAll('.tab-button');
+
+            function updateTabContent(tabName) {
+                contentContainer.innerHTML = capabilitiesContent[tabName];
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    });
+                    this.classList.add('active');
+                    this.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    updateTabContent(this.dataset.tab);
+                });
+            });
+
+            updateTabContent('training');
+
+            const navLinks = document.querySelectorAll('nav a');
+            const sections = document.querySelectorAll('main section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
